@@ -1,0 +1,113 @@
+$scoreBig: 100px;
+$scoreSmall: 80px;
+
+#wrap {
+  max-width: 500px;
+  margin: 0 auto;
+
+  header {
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    h1 {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 3rem;
+      font-weight: bold;
+    }
+  }
+}
+
+
+
+
+.show-score {
+  display: flex;
+  margin-top: 20%;
+  margin-bottom: 8%;
+
+  .score {
+    width: $scoreBig;
+    background-color: #9f8b77;
+    margin-right: 20px;
+    border-radius: 5px;
+    color: #fff;
+    padding: 6px;
+
+    :first-child {
+      color: #ccc0b3;
+    }
+
+    :last-child {
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+  }
+
+  .great {
+    margin-right: 0;
+  }
+}
+
+#start {
+  display: block;
+  margin-left: auto;
+  width: $scoreBig;
+  padding: 10px;
+  background-color: #8f7a66;
+  color: #fff;
+  border-radius: 10px;
+  text-decoration: none;
+
+  &:hover {
+    background-color: #9f8b77;
+  }
+}
+
+#container {
+  box-sizing: border-box;
+  margin: 30px auto;
+  background-color: #bbada0;
+  border-radius: 10px;
+  position: relative;
+  font-size: 0;
+
+  .cell {
+    width: 20%;
+    border-radius: 6px;
+    background-color: #ccc0b3;
+    display: inline-block;
+    margin-left: 4%;
+    margin-top: 4%;
+  }
+
+  .numCell {
+    width: 20%;
+    border-radius: 6px;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 5rem;
+    text-align: center;
+    line-height: 100px;
+    position: absolute;
+  }
+}
+
+@media screen and(max-width:420px) {
+  #wrap {
+    width: 92%;
+    margin: 0 auto;
+  }
+
+  #container .numCell {
+    font-size: 4rem;
+  }
+
+
+  .show-score .score,
+  #start {
+    width: 80px;
+  }
+}
