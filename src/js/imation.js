@@ -4,7 +4,7 @@ import {
   getColor,
   getPosTop,
   getPosLeft
-} from './support'
+} from './support';
 
 // 展示块上的数值
 export function showNum(i, j, randNum, width) {
