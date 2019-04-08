@@ -98,18 +98,18 @@ $scoreSmall: 80px;
 #over {
   position: absolute;
   z-index: 5;
-  width: 50%;
-  height: 30%;
+  display: none;
+  justify-content: center;
+  align-items: center;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  margin: auto;
   font-size: 2rem;
   font-weight: bolder;
   text-align: center;
   color: #fff;
-  display: none;
+  background: rgba(128, 128, 128, 0.5);
 
   a {
     display: inline-block;

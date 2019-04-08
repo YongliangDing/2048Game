@@ -58,8 +58,12 @@ export function getBackgroumdColor(val) {
     case 2048:
       color = '#09c';
       break;
-    default:
+    case 4096:
+      color = '#a6c';
+      break;
+    case 8192:
       color = '#93c';
+      break;
   }
   return color;
 }

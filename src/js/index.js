@@ -76,7 +76,6 @@ function offEvent() {
 
 // 负责布局16个格,并将每个格子的值初始化为0
 function init() {
-  $('.cell').show();
   for (let i = 0; i < 4; i++) {
     board[i] = [];
     hasConflicted[i] = [];
@@ -113,18 +112,18 @@ function updateBoardView() {
           'background-color': support.getBackgroumdColor(board[i][j]),
           'color': support.getColor(board[i][j])
         });
-        if ($ele.html() > 9) {
+        if ($ele.html() > 999) {
           deviceWidth === 500 ?
-            $ele.css('font-size', 64) :
-            $ele.css('font-size', 48);
+            $ele.css('font-size', 36) :
+            $ele.css('font-size', 24);
         } else if ($ele.html() > 99) {
           deviceWidth === 500 ?
             $ele.css('font-size', 48) :
             $ele.css('font-size', 36);
-        } else if ($ele.html() > 999) {
+        } else if ($ele.html() > 9) {
           deviceWidth === 500 ?
-            $ele.css('font-size', 30) :
-            $ele.css('font-size', 24);
+            $ele.css('font-size', 64) :
+            $ele.css('font-size', 48);
         }
       }
       hasConflicted[i][j] = false;
@@ -150,19 +149,25 @@ function doMove(val) {
   }
 }
 
-
-
 // 检测游戏是否结束,即无空间且不可移动
 function isGameOver() {
   if (!support.noSpace(board) || !support.noMove(board)) {
     return false;
   }
-  $('#over').show();
-  $('.numCell').hide();
-  $('.cell').hide();
   $('#over .score').html(score);
   offEvent();
+  setTimeout(() => {
+    $('#over').css('display', 'flex');
+  }, 1000);
 
+  $(document).on('keyup', (event) => {
+    event.preventDefault();
+    if (event.keyCode === 13) {
+      $(document).off('keyup');
+      $('#over').hide();
+      newGame();
+    }
+  });
   deviceWidth === 500 ?
     $('#over a').on('click', () => {
       $('#over').hide();
