@@ -5,7 +5,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   entry: {
-    app: './src/js/index.js'
+    app: './src/ts/index.ts'
   },
   output: {
     filename: '[name].bundle.js',
@@ -21,6 +21,9 @@ module.exports = {
       filename: './css/[name].css',
     })
   ],
+  resolve: {
+    extensions: ['.ts', '.js', '.json']
+  },
   optimization: {
     splitChunks: {
       chunks: 'all'
@@ -40,6 +43,11 @@ module.exports = {
         'css-loader',
         'sass-loader'
       ]
+      }, {
+        test: /\.ts$/,
+        use: [
+          'ts-loader'
+        ]
     }]
   }
 }

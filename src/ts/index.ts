@@ -1,6 +1,5 @@
-require('../css/reset.scss');
-require('../css/index.scss');
-
+import '../css/reset.scss';
+import '../css/index.scss';
 import $ from 'jquery';
 import {
   score,
@@ -13,8 +12,10 @@ import {
 import * as imation from './imation';
 import * as support from './support';
 
-let startX, startY;
-let endX, endY;
+let startX: number;
+let startY: number;
+let endX: number;
+let endY: number;
 
 $(document).ready(() => {
   newGame();
@@ -35,8 +36,8 @@ function newGame() {
   support.createOneNum();
   support.createOneNum();
   onEvent();
-  $('#container').height($('#container').width());
-  $('.cell').height($('.cell').width());
+  $('#container').height($('#container').width()!);
+  $('.cell').height($('.cell').width()!);
 }
 
 function onEvent() {
@@ -92,7 +93,7 @@ function updateBoardView() {
   $('.numCell').remove();
   for (let i = 0; i < 4; i++) {
     for (let j = 0; j < 4; j++) {
-      let $ele = $('<div></div>').addClass('numCell');
+      const $ele = $('<div></div>').addClass('numCell');
       $ele.attr('id', 'numCell-' + i + '-' + j);
       $container.append($ele);
       $('.numCell').css('line-height', $('.cell').width() + 'px');
@@ -104,23 +105,23 @@ function updateBoardView() {
           'left': support.getPosLeft(j) + deviceWidth * 0.1
         });
       } else {
-        $ele.html(board[i][j]).css({
+        $ele.html(board[i][j] + '').css({
           'width': deviceWidth * 0.2,
           'height': deviceWidth * 0.2,
-          'top': support.getPosTop(i, deviceWidth),
-          'left': support.getPosLeft(j, deviceWidth),
+          'top': support.getPosTop(i),
+          'left': support.getPosLeft(j),
           'background-color': support.getBackgroumdColor(board[i][j]),
           'color': support.getColor(board[i][j])
         });
-        if ($ele.html() > 999) {
+        if (+$ele.html() > 999) {
           deviceWidth === 500 ?
             $ele.css('font-size', 36) :
             $ele.css('font-size', 24);
-        } else if ($ele.html() > 99) {
+        } else if (+$ele.html() > 99) {
           deviceWidth === 500 ?
             $ele.css('font-size', 48) :
             $ele.css('font-size', 36);
-        } else if ($ele.html() > 9) {
+        } else if (+$ele.html() > 9) {
           deviceWidth === 500 ?
             $ele.css('font-size', 64) :
             $ele.css('font-size', 48);
@@ -132,29 +133,41 @@ function updateBoardView() {
 }
 
 // 移动函数
-function doMove(val) {
+function doMove(val: number) {
   switch (val) {
     case 37:
-      support.moveLeft(updateBoardView) && setTimeout(support.createOneNum, 210) && setTimeout(isGameOver, 300);
+      if(support.moveLeft(updateBoardView)) {
+        setTimeout(support.createOneNum, 210);
+        setTimeout(isGameOver, 300);
+      }
       break;
     case 38:
-      support.moveUp(updateBoardView) && setTimeout(support.createOneNum, 210) && setTimeout(isGameOver, 300);
+      if(support.moveUp(updateBoardView)) {
+        setTimeout(support.createOneNum, 210);
+        setTimeout(isGameOver, 300);
+      }
       break;
     case 39:
-      support.moveRight(updateBoardView) && setTimeout(support.createOneNum, 210) && setTimeout(isGameOver, 300);
+      if(support.moveRight(updateBoardView)) {
+        setTimeout(support.createOneNum, 210);
+        setTimeout(isGameOver, 300);
+      }
       break;
     case 40:
-      support.moveDown(updateBoardView) && setTimeout(support.createOneNum, 210) && setTimeout(isGameOver, 300);
+      if(support.moveDown(updateBoardView)) {
+        setTimeout(support.createOneNum, 210);
+        setTimeout(isGameOver, 300);
+      }
       break;
   }
 }
 
 // 检测游戏是否结束,即无空间且不可移动
 function isGameOver() {
-  if (!support.noSpace(board) || !support.noMove(board)) {
+  if (!support.noSpace() || !support.noMove()) {
     return false;
   }
-  $('#over .score').html(score);
+  $('#over .score').html(score + '');
   offEvent();
   setTimeout(() => {
     $('#over').css('display', 'flex');

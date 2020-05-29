@@ -1,29 +1,22 @@
-import {
-  showNum,
-  showMove,
-  updateScore
-} from './imation';
+import { showMove, showNum, updateScore } from './imation';
+import { board, deviceWidth, editScore, hasConflicted, score } from './variable';
 
-import {
-  score,
-  board,
-  hasConflicted,
-  deviceWidth,
-  editScore
-} from './variable';
+type IUpdateBoardView = () => void
+
+
 
 // 设置格子位置
-export function getPosTop(i) {
+export function getPosTop(i: number): number {
   return deviceWidth * 0.04 + i * deviceWidth * 0.24;
 }
 
-export function getPosLeft(j) {
+export function getPosLeft(j: number) {
   return deviceWidth * 0.04 + j * deviceWidth * 0.24;
 }
 
 // 根据值设置背景颜色
-export function getBackgroumdColor(val) {
-  let color;
+export function getBackgroumdColor(val: number): string {
+  let color: string = '';
   switch (val) {
     case 2:
       color = '#eee4da';
@@ -69,15 +62,12 @@ export function getBackgroumdColor(val) {
 }
 
 // 根据值设置颜色
-export function getColor(val) {
-  if (val <= 4) {
-    return '#776e65';
-  }
-  return '#fff';
+export function getColor(val: number): string {
+  return val <= 4 ? '#776e65' : '#fff';
 }
 
 // 检测是否还有空间
-export function noSpace(board) {
+export function noSpace(): boolean {
   for (let i = 0; i < 4; i++) {
     for (let j = 0; j < 4; j++) {
       if (board[i][j] === 0) {
@@ -90,10 +80,10 @@ export function noSpace(board) {
 }
 
 // 检测是否可以向左移动
-export function canMoveLeft(board) {
+export function canMoveLeft(): boolean {
   for (let i = 0; i < 4; i++) {
     for (let j = 1; j < 4; j++) {
-      if (board[i][j] !== 0 && (board[i][j - 1] === 0 || board[i][j - 1] === board[i][j])) { //该位置有值,左侧值为0或值相同
+      if (board[i][j] !== 0 && (board[i][j - 1] === 0 || board[i][j - 1] === board[i][j])) { // 该位置有值,左侧值为0或值相同
         return true;
       }
     }
@@ -102,11 +92,11 @@ export function canMoveLeft(board) {
 }
 
 // 检测有块的格子左侧有相同块或者无块则可以移动
-export function canMoveRight(board) {
+export function canMoveRight(): boolean {
   for (let i = 0; i < 4; i++) {
     for (let j = 2; j >= 0; j--) {
-      //该位置有值
-      if (board[i][j] !== 0 && (board[i][j + 1] === 0 || board[i][j + 1] === board[i][j])) { //右侧值为0或值相同
+      // 该位置有值
+      if (board[i][j] !== 0 && (board[i][j + 1] === 0 || board[i][j + 1] === board[i][j])) { // 右侧值为0或值相同
         return true;
       }
     }
@@ -114,11 +104,11 @@ export function canMoveRight(board) {
   return false;
 }
 
-export function canMoveUp(board) {
+export function canMoveUp(): boolean {
   for (let i = 1; i < 4; i++) {
     for (let j = 0; j < 4; j++) {
-      //该位置有值
-      if (board[i][j] !== 0 && (board[i - 1][j] === 0 || board[i - 1][j] === board[i][j])) { //上侧值为0或值相同
+      // 该位置有值
+      if (board[i][j] !== 0 && (board[i - 1][j] === 0 || board[i - 1][j] === board[i][j])) { // 上侧值为0或值相同
         return true;
       }
     }
@@ -126,10 +116,10 @@ export function canMoveUp(board) {
   return false;
 }
 
-export function canMoveDown(board) {
+export function canMoveDown(): boolean {
   for (let i = 2; i >= 0; i--) {
     for (let j = 0; j < 4; j++) {
-      if (board[i][j] !== 0 && (board[i + 1][j] === 0 || board[i + 1][j] === board[i][j])) { //下册值为0或值相同
+      if (board[i][j] !== 0 && (board[i + 1][j] === 0 || board[i + 1][j] === board[i][j])) { // 下册值为0或值相同
         return true;
       }
     }
@@ -138,36 +128,36 @@ export function canMoveDown(board) {
 }
 
 // 检测(i,j)的左侧是否有块
-export function noBlockLeft(i, k, j, arr) {
+function noBlockLeft(i: number, k: number, j: number): boolean {
   for (let index = k + 1; index < j; index++) {
-    if (arr[i][index] != 0) {
+    if (board[i][index] !== 0) {
       return false;
     }
   }
   return true;
 }
 
-export function noBlockRight(i, k, j, arr) {
+function noBlockRight(i: number, k: number, j: number): boolean {
   for (let index = k - 1; index > j; index--) {
-    if (arr[i][index] != 0) {
+    if (board[i][index] !== 0) {
       return false;
     }
   }
   return true;
 }
 
-export function noBlockUp(j, k, i, arr) {
+export function noBlockUp(i: number, k: number, j: number): boolean {
   for (let index = k + 1; index < i; index++) {
-    if (arr[index][j] != 0) {
+    if (board[index][j] !== 0) {
       return false;
     }
   }
   return true;
 }
 
-export function noBlockDown(j, k, i, arr) {
+export function noBlockDown(i: number, k: number, j: number): boolean {
   for (let index = k - 1; index > i; index--) {
-    if (arr[index][j] != 0) {
+    if (board[index][j] !== 0) {
       return false;
     }
   }
@@ -176,30 +166,30 @@ export function noBlockDown(j, k, i, arr) {
 
 
 // 检测是否不可移动
-export function noMove(board) {
-  if (canMoveLeft(board) || canMoveRight(board) || canMoveUp(board) || canMoveDown(board)) {
+export function noMove(): boolean {
+  if (canMoveLeft() || canMoveRight() || canMoveUp() || canMoveDown()) {
     return false;
   }
   return true;
 }
 
 // 新建块,并随机赋值2或4
-export function createOneNum() {
+export function createOneNum(): boolean {
   // 判断有无空位置
-  if (noSpace(board)) {
+  if (noSpace()) {
     return false;
   }
 
   // 随机位置
-  let randx = parseInt(Math.floor(Math.random() * 4));
-  let randy = parseInt(Math.floor(Math.random() * 4));
-  while (board[randx][randy] != 0) {
-    randx = parseInt(Math.floor(Math.random() * 4));
-    randy = parseInt(Math.floor(Math.random() * 4));
+  let randx = Math.floor(Math.floor(Math.random() * 4));
+  let randy = Math.floor(Math.floor(Math.random() * 4));
+  while (board[randx][randy] !== 0) {
+    randx = Math.floor(Math.floor(Math.random() * 4));
+    randy = Math.floor(Math.floor(Math.random() * 4));
   }
 
   // 随机数字
-  let randNum = Math.random() < 0.5 ? 2 : 4;
+  const randNum = Math.random() < 0.5 ? 2 : 4;
   board[randx][randy] = randNum;
   showNum(randx, randy, randNum, deviceWidth);
   console.log('create', randx + 1, randy + 1, randNum);
@@ -207,10 +197,10 @@ export function createOneNum() {
 }
 
 
-export function moveLeft(updateBoardView) {
+export function moveLeft(updateBoardView: IUpdateBoardView) {
   console.log('←');
 
-  if (!canMoveLeft(board)) {
+  if (!canMoveLeft()) {
     return false;
   }
 
@@ -218,15 +208,15 @@ export function moveLeft(updateBoardView) {
     for (let j = 1; j < 4; j++) {
       if (board[i][j] === 0) {
         continue;
-      } //该位置有值
+      } // 该位置有值
       for (let k = 0; k < j; k++) { // k是比j小的值
-        if (board[i][k] === 0 && noBlockLeft(i, k, j, board)) { //左侧有空位置且中间无阻碍
+        if (board[i][k] === 0 && noBlockLeft(i, k, j)) { // 左侧有空位置且中间无阻碍
           showMove(i, j, i, k, deviceWidth); // (i, j) => (i, k)
           board[i][k] = board[i][j];
           board[i][j] = 0;
           console.log('move', '(' + (i + 1) + ',' + (j + 1) + ')=>(' + (i + 1) + ',' + (k + 1) + ')');
           break;
-        } else if (board[i][k] === board[i][j] && noBlockLeft(i, k, j, board) && !hasConflicted[i][k]) { //左侧有值相同且中间无阻碍
+        } else if (board[i][k] === board[i][j] && noBlockLeft(i, k, j) && !hasConflicted[i][k]) { // 左侧有值相同且中间无阻碍
           showMove(i, j, i, k, deviceWidth);
           board[i][k] += board[i][j];
           board[i][j] = 0;
@@ -244,9 +234,9 @@ export function moveLeft(updateBoardView) {
   return true;
 }
 
-export function moveUp(updateBoardView) {
+export function moveUp(updateBoardView: IUpdateBoardView) {
   console.log('↑');
-  if (!canMoveUp(board)) {
+  if (!canMoveUp()) {
     return false;
   }
 
@@ -254,15 +244,15 @@ export function moveUp(updateBoardView) {
     for (let j = 0; j < 4; j++) {
       if (board[i][j] === 0) {
         continue;
-      } //该位置有值
+      } // 该位置有值
       for (let k = 0; k < i; k++) {
-        if (board[k][j] === 0 && noBlockUp(j, k, i, board)) { //上侧有空位置且中间无阻碍
+        if (board[k][j] === 0 && noBlockUp(j, k, i)) { // 上侧有空位置且中间无阻碍
           showMove(i, j, k, j, deviceWidth);
           board[k][j] = board[i][j];
           board[i][j] = 0;
           console.log('move', '(' + (i + 1) + ',' + (j + 1) + ')=>(' + (k + 1) + ',' + (j + 1) + ')');
           break;
-        } else if (board[k][j] === board[i][j] && noBlockUp(j, k, i, board) && !hasConflicted[k][j]) { //上侧有值相同且中间无阻碍
+        } else if (board[k][j] === board[i][j] && noBlockUp(j, k, i) && !hasConflicted[k][j]) { // 上侧有值相同且中间无阻碍
           showMove(i, j, k, j, deviceWidth);
           board[k][j] += board[i][j];
           board[i][j] = 0;
@@ -272,7 +262,6 @@ export function moveUp(updateBoardView) {
           console.log('move', '(' + (i + 1) + ',' + (j + 1) + ')=>(' + (k + 1) + ',' + (j + 1) + ')');
           break;
         }
-
       }
     }
   }
@@ -281,10 +270,10 @@ export function moveUp(updateBoardView) {
   return true;
 }
 
-export function moveRight(updateBoardView) {
+export function moveRight(updateBoardView: IUpdateBoardView) {
   console.log('→');
 
-  if (!canMoveRight(board)) {
+  if (!canMoveRight()) {
     return false;
   }
 
@@ -292,15 +281,15 @@ export function moveRight(updateBoardView) {
     for (let j = 2; j >= 0; j--) {
       if (board[i][j] === 0) {
         continue;
-      } //该位置有值
+      } // 该位置有值
       for (let k = 3; k > j; k--) {
-        if (board[i][k] === 0 && noBlockRight(i, k, j, board)) { //右侧有空位置且中间无阻碍
+        if (board[i][k] === 0 && noBlockRight(i, k, j)) { // 右侧有空位置且中间无阻碍
           showMove(i, j, i, k, deviceWidth);
           board[i][k] = board[i][j];
           board[i][j] = 0;
           console.log('move', '(' + (i + 1) + ',' + (j + 1) + ')=>(' + (i + 1) + ',' + (k + 1) + ')');
           break;
-        } else if (board[i][k] === board[i][j] && noBlockRight(i, k, j, board) && !hasConflicted[i][k]) { //右侧有值相同且中间无阻碍
+        } else if (board[i][k] === board[i][j] && noBlockRight(i, k, j) && !hasConflicted[i][k]) { // 右侧有值相同且中间无阻碍
           showMove(i, j, i, k, deviceWidth);
           board[i][k] += board[i][j];
           board[i][j] = 0;
@@ -318,9 +307,9 @@ export function moveRight(updateBoardView) {
   return true;
 }
 
-export function moveDown(updateBoardView) {
+export function moveDown(updateBoardView: IUpdateBoardView) {
   console.log('↓');
-  if (!canMoveDown(board)) {
+  if (!canMoveDown()) {
     return false;
   }
 
@@ -328,15 +317,15 @@ export function moveDown(updateBoardView) {
     for (let j = 0; j < 4; j++) {
       if (board[i][j] === 0) {
         continue;
-      } //该位置有值
+      } // 该位置有值
       for (let k = 3; k > i; k--) {
-        if (board[k][j] === 0 && noBlockDown(j, k, i, board)) { //下侧有空位置且中间无阻碍
+        if (board[k][j] === 0 && noBlockDown(j, k, i)) { // 下侧有空位置且中间无阻碍
           showMove(i, j, k, j, deviceWidth);
           board[k][j] = board[i][j];
           board[i][j] = 0;
           console.log('move', '(' + (i + 1) + ',' + (j + 1) + ')=>(' + (k + 1) + ',' + (j + 1) + ')');
           break;
-        } else if (board[k][j] === board[i][j] && noBlockDown(j, k, i, board) && !hasConflicted[k][j]) { //下侧有值相同且中间无阻碍
+        } else if (board[k][j] === board[i][j] && noBlockDown(j, k, i) && !hasConflicted[k][j]) { // 下侧有值相同且中间无阻碍
           showMove(i, j, k, j, deviceWidth);
           board[k][j] += board[i][j];
           board[i][j] = 0;
