@@ -12,18 +12,19 @@ import {
   editScore
 } from './variable';
 
+
 // 设置格子位置
-export function getPosTop(i) {
+export function getPosTop(i: number): number {
   return deviceWidth * 0.04 + i * deviceWidth * 0.24;
 }
 
-export function getPosLeft(j) {
+export function getPosLeft(j: number) {
   return deviceWidth * 0.04 + j * deviceWidth * 0.24;
 }
 
 // 根据值设置背景颜色
-export function getBackgroumdColor(val) {
-  let color;
+export function getBackgroumdColor(val: number): string {
+  let color: string = '';
   switch (val) {
     case 2:
       color = '#eee4da';
@@ -69,15 +70,12 @@ export function getBackgroumdColor(val) {
 }
 
 // 根据值设置颜色
-export function getColor(val) {
-  if (val <= 4) {
-    return '#776e65';
-  }
-  return '#fff';
+export function getColor(val: number): string {
+  return val <= 4 ? '#776e65' : '#fff';
 }
 
 // 检测是否还有空间
-export function noSpace(board) {
+export function noSpace(board: number[][]): boolean {
   for (let i = 0; i < 4; i++) {
     for (let j = 0; j < 4; j++) {
       if (board[i][j] === 0) {
@@ -90,7 +88,7 @@ export function noSpace(board) {
 }
 
 // 检测是否可以向左移动
-export function canMoveLeft(board) {
+export function canMoveLeft(board: number[][]): boolean {
   for (let i = 0; i < 4; i++) {
     for (let j = 1; j < 4; j++) {
       if (board[i][j] !== 0 && (board[i][j - 1] === 0 || board[i][j - 1] === board[i][j])) { //该位置有值,左侧值为0或值相同
@@ -102,7 +100,7 @@ export function canMoveLeft(board) {
 }
 
 // 检测有块的格子左侧有相同块或者无块则可以移动
-export function canMoveRight(board) {
+export function canMoveRight(board: number[][]): boolean {
   for (let i = 0; i < 4; i++) {
     for (let j = 2; j >= 0; j--) {
       //该位置有值
@@ -114,7 +112,7 @@ export function canMoveRight(board) {
   return false;
 }
 
-export function canMoveUp(board) {
+export function canMoveUp(board: number[][]): boolean {
   for (let i = 1; i < 4; i++) {
     for (let j = 0; j < 4; j++) {
       //该位置有值
@@ -126,7 +124,7 @@ export function canMoveUp(board) {
   return false;
 }
 
-export function canMoveDown(board) {
+export function canMoveDown(board: number[][]): boolean {
   for (let i = 2; i >= 0; i--) {
     for (let j = 0; j < 4; j++) {
       if (board[i][j] !== 0 && (board[i + 1][j] === 0 || board[i + 1][j] === board[i][j])) { //下册值为0或值相同
@@ -138,7 +136,12 @@ export function canMoveDown(board) {
 }
 
 // 检测(i,j)的左侧是否有块
-export function noBlockLeft(i, k, j, arr) {
+export function noBlockLeft(
+  i: number,
+  k: number,
+  j: number,
+  arr: number[][]
+): boolean {
   for (let index = k + 1; index < j; index++) {
     if (arr[i][index] != 0) {
       return false;
@@ -147,7 +150,12 @@ export function noBlockLeft(i, k, j, arr) {
   return true;
 }
 
-export function noBlockRight(i, k, j, arr) {
+export function noBlockRight(
+  i: number,
+  k: number,
+  j: number,
+  arr: number[][]
+): boolean {
   for (let index = k - 1; index > j; index--) {
     if (arr[i][index] != 0) {
       return false;
@@ -156,7 +164,12 @@ export function noBlockRight(i, k, j, arr) {
   return true;
 }
 
-export function noBlockUp(j, k, i, arr) {
+export function noBlockUp(
+  i: number,
+  k: number,
+  j: number,
+  arr: number[][]
+): boolean {
   for (let index = k + 1; index < i; index++) {
     if (arr[index][j] != 0) {
       return false;
@@ -165,7 +178,7 @@ export function noBlockUp(j, k, i, arr) {
   return true;
 }
 
-export function noBlockDown(j, k, i, arr) {
+export function noBlockDown(i: number, k: number, j: number, arr: number[][]): boolean {
   for (let index = k - 1; index > i; index--) {
     if (arr[index][j] != 0) {
       return false;
@@ -176,7 +189,7 @@ export function noBlockDown(j, k, i, arr) {
 
 
 // 检测是否不可移动
-export function noMove(board) {
+export function noMove(board: number[][]): boolean {
   if (canMoveLeft(board) || canMoveRight(board) || canMoveUp(board) || canMoveDown(board)) {
     return false;
   }
@@ -184,18 +197,18 @@ export function noMove(board) {
 }
 
 // 新建块,并随机赋值2或4
-export function createOneNum() {
+export function createOneNum(): boolean {
   // 判断有无空位置
   if (noSpace(board)) {
     return false;
   }
 
   // 随机位置
-  let randx = parseInt(Math.floor(Math.random() * 4));
-  let randy = parseInt(Math.floor(Math.random() * 4));
-  while (board[randx][randy] != 0) {
-    randx = parseInt(Math.floor(Math.random() * 4));
-    randy = parseInt(Math.floor(Math.random() * 4));
+  let randx = Math.floor(Math.floor(Math.random() * 4));
+  let randy = Math.floor(Math.floor(Math.random() * 4));
+  while (board[randx][randy] !== 0) {
+    randx = Math.floor(Math.floor(Math.random() * 4));
+    randy = Math.floor(Math.floor(Math.random() * 4));
   }
 
   // 随机数字
@@ -207,7 +220,7 @@ export function createOneNum() {
 }
 
 
-export function moveLeft(updateBoardView) {
+export function moveLeft(updateBoardView: Function) {
   console.log('←');
 
   if (!canMoveLeft(board)) {
@@ -244,7 +257,7 @@ export function moveLeft(updateBoardView) {
   return true;
 }
 
-export function moveUp(updateBoardView) {
+export function moveUp(updateBoardView: Function) {
   console.log('↑');
   if (!canMoveUp(board)) {
     return false;
@@ -281,7 +294,7 @@ export function moveUp(updateBoardView) {
   return true;
 }
 
-export function moveRight(updateBoardView) {
+export function moveRight(updateBoardView: Function) {
   console.log('→');
 
   if (!canMoveRight(board)) {
@@ -318,7 +331,7 @@ export function moveRight(updateBoardView) {
   return true;
 }
 
-export function moveDown(updateBoardView) {
+export function moveDown(updateBoardView: Function) {
   console.log('↓');
   if (!canMoveDown(board)) {
     return false;

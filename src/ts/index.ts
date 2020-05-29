@@ -1,5 +1,5 @@
-require('../css/reset.scss');
-require('../css/index.scss');
+import '../css/reset.scss';
+import '../css/index.scss';
 
 import $ from 'jquery';
 import {
@@ -13,7 +13,7 @@ import {
 import * as imation from './imation';
 import * as support from './support';
 
-let startX, startY;
+let startX: number, startY: number;
 let endX, endY;
 
 $(document).ready(() => {
@@ -35,8 +35,8 @@ function newGame() {
   support.createOneNum();
   support.createOneNum();
   onEvent();
-  $('#container').height($('#container').width());
-  $('.cell').height($('.cell').width());
+  $('#container').height($('#container').width()!);
+  $('.cell').height($('.cell').width()!);
 }
 
 function onEvent() {
@@ -104,23 +104,23 @@ function updateBoardView() {
           'left': support.getPosLeft(j) + deviceWidth * 0.1
         });
       } else {
-        $ele.html(board[i][j]).css({
+        $ele.html(board[i][j] + '').css({
           'width': deviceWidth * 0.2,
           'height': deviceWidth * 0.2,
-          'top': support.getPosTop(i, deviceWidth),
-          'left': support.getPosLeft(j, deviceWidth),
+          'top': support.getPosTop(i),
+          'left': support.getPosLeft(j),
           'background-color': support.getBackgroumdColor(board[i][j]),
           'color': support.getColor(board[i][j])
         });
-        if ($ele.html() > 999) {
+        if (+$ele.html() > 999) {
           deviceWidth === 500 ?
             $ele.css('font-size', 36) :
             $ele.css('font-size', 24);
-        } else if ($ele.html() > 99) {
+        } else if (+$ele.html() > 99) {
           deviceWidth === 500 ?
             $ele.css('font-size', 48) :
             $ele.css('font-size', 36);
-        } else if ($ele.html() > 9) {
+        } else if (+$ele.html() > 9) {
           deviceWidth === 500 ?
             $ele.css('font-size', 64) :
             $ele.css('font-size', 48);
@@ -132,7 +132,7 @@ function updateBoardView() {
 }
 
 // 移动函数
-function doMove(val) {
+function doMove(val: number) {
   switch (val) {
     case 37:
       support.moveLeft(updateBoardView) && setTimeout(support.createOneNum, 210) && setTimeout(isGameOver, 300);
@@ -154,7 +154,7 @@ function isGameOver() {
   if (!support.noSpace(board) || !support.noMove(board)) {
     return false;
   }
-  $('#over .score').html(score);
+  $('#over .score').html(score + '');
   offEvent();
   setTimeout(() => {
     $('#over').css('display', 'flex');
